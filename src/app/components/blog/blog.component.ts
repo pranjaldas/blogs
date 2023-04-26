@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { Blog } from 'src/app/models/blog';
+import { BlogsApiService } from 'src/app/services/blogs-api.service';
 
 @Component({
   selector: 'app-blog',
@@ -8,16 +10,18 @@ import { Blog } from 'src/app/models/blog';
 })
 export class BlogComponent implements OnInit {
   @Input() blog: Blog | undefined;
-  constructor() { }
+  @Output() blogDeleted = new EventEmitter<Blog>();
+  constructor(private blogsApiService: BlogsApiService, private router: Router) { }
 
   ngOnInit(): void {
-    console.table(this.blog);
   }
   deleteBlog(){
-    console.log("Delete "+this.blog?.id);
+    if (window.confirm("Are you sure you want to delete ?")) {
+      this.blogDeleted.emit(this.blog);
+    } 
   }
   editBlog(){
-    console.log("Edit "+this.blog?.id);
+    this.router.navigate(['/blog/edit',this.blog?.id])
   }
 
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable} from '@angular/core';
 import { Blog } from '../models/blog';
 
 @Injectable({
@@ -16,7 +16,20 @@ export class BlogsApiService {
   getAllBlogs(){
     return this.blogsList;
   }
+  getById(id: number){
+    return this.blogsList.find(blog => blog.id === id);
+  }
   createBlog(blog: Blog){
     this.blogsList.push(blog);
+  }
+  deleteBlog(blog: any){
+    this.blogsList = this.blogsList.filter(blog1=> blog1.id !== blog.id);
+    console.log(this.blogsList);
+  }
+  update(updatedBlog: Blog) {
+    const index = this.blogsList.findIndex(blog => blog.id === updatedBlog.id);
+    if (index !== -1) {
+      this.blogsList[index] = updatedBlog;
+    }
   }
 }
